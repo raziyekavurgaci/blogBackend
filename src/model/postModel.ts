@@ -1,7 +1,29 @@
 import db from "src/config/db";
 
-export const getAllPosts = () => {
-  return db("posts").where({ deleted_at: null });
+export const getAllPosts = (
+  showDeleted: string,
+  status: string,
+  category: number
+) => {
+  const query = db("posts");
+  if (showDeleted === "true") {
+  } else if (showDeleted === "onlyDeleted") {
+    query.whereNot("deleted_at", null);
+  } else {
+    query.where("deleted_at", null);
+  }
+
+  if (category) {
+    query.where("category_id", category);
+  }
+
+  if (status === "published") {
+    query.whereNot("published_at", null);
+  } else if (status === "draft") {
+    query.where("published_at", null);
+  }
+
+  return query;
 };
 
 export const getPostById = (id: number) => {

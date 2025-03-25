@@ -9,7 +9,12 @@ import {
 
 export const listPosts = async (req: Request, res: Response) => {
   try {
-    const allPosts = await getAllPosts();
+    const { showDeleted, status, category } = req.query;
+    const allPosts = await getAllPosts(
+      showDeleted as string,
+      status as string,
+      Number(category)
+    );
     res.json(allPosts);
   } catch (error) {
     console.log(error);

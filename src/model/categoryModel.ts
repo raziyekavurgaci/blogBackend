@@ -1,7 +1,14 @@
 import db from "src/config/db";
 
-export const getAllCategories = () => {
-  return db("categories").where({ deleted_at: null });
+export const getAllCategories = (showDeleted: string) => {
+  const query = db("categories");
+  if (showDeleted === "true") {
+  } else if (showDeleted === "onlyDeleted") {
+    query.whereNot("deleted_at", null);
+  } else {
+    query.where("deleted_at", null);
+  }
+  return query;
 };
 
 export const getCategoryById = (id: number) => {

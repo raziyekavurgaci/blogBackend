@@ -9,7 +9,10 @@ import {
 
 export const listCategories = async (req: Request, res: Response) => {
   try {
-    const categories = await getAllCategories();
+    const { showDeleted } = req.query;
+    // const queryParams = req.query;
+    // const showDeleted = queryParams.showDeleted yukarıdaki gibi yazılmasaydı manuel olarak yazmış olurdum
+    const categories = await getAllCategories(showDeleted as string);
     res.json(categories);
   } catch (error) {
     console.log(error);
